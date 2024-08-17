@@ -6,8 +6,8 @@ function Player() {
 	Pl.bounceHeight = 5;
 	Pl.w = 20;
 	Pl.h = Pl.maxH;
-	Pl.x = G.buildings[0].x;
-	Pl.y = G.buildings[0].y - Pl.h;
+	Pl.x = G.trees[0].x;
+	Pl.y = G.trees[0].y - Pl.h;
 	Pl.vel = 0;
 	Pl.isJet = false;
 	Pl.isRest = true;
@@ -99,8 +99,8 @@ Player.prototype = {
 		for (var i = -30; i < Pl.w + 30; i+=6) {
 			bp();
 			mt(Pl.x + i, Pl.y + Pl.h);
-			lt(Pl.x + i - 1, Pl.y + Pl.h + utils.getRandomInt(35, 40));
-			lt(Pl.x + i + 3, Pl.y + Pl.h + utils.getRandomInt(35, 40));
+			lt(Pl.x + i - 1, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height/2));
+			lt(Pl.x + i + 3, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height/2));
 			lt(Pl.x + i + 1, Pl.y + Pl.h);
 			cp();
 			fl();
