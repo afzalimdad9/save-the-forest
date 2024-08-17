@@ -142,156 +142,156 @@ Background.prototype = {
 				BG.intensity = 0;
 				BG.randomizeThreshold();
 			}
- 		};
+			};
 
 	}
 };*/
 
-var flameBack = new function() {
-    var context;
-    var buffer;
-    var bufferContext;
-    var imageData;
-    var palette;
-    var colorMap;
-    var width;
-    var height;
-    var scale = 2;
-    var fan = 2.5;
-    var slack = 5;
-    this.time = new Date();
+var flameBack = new function () {
+	var context;
+	var buffer;
+	var bufferContext;
+	var imageData;
+	var palette;
+	var colorMap;
+	var width;
+	var height;
+	var scale = 2;
+	var fan = 2.5;
+	var slack = 5;
+	this.time = new Date();
 
-    this.canvas = undefined;
+	this.canvas = undefined;
 
-    this.init = function() {
-        context = this.canvas.getContext('2d');
+	this.init = function () {
+		context = this.canvas.getContext('2d');
 
-        width = (this.canvas.width + 30) / scale;
-        height = P.fireOffset / scale;
+		width = (this.canvas.width + 30) / scale;
+		height = P.fireOffset / scale;
 
-        width = Math.ceil(width);
-        height = Math.ceil(height);
+		width = Math.ceil(width);
+		height = Math.ceil(height);
 
-        colorMap = Array(width * height);
+		colorMap = Array(width * height);
 
-        for(var i = 0; i < colorMap.length; i++)
-            colorMap[i] = 255;
+		for (var i = 0; i < colorMap.length; i++)
+			colorMap[i] = 255;
 
-        initPalette();
-        initBuffer();
+		initPalette();
+		initBuffer();
 
-        this.update();
-    };
+		this.update();
+	};
 
-    // init palette from warm to white hot colors
-    var initPalette = function() {
-        palette = Array(256);
+	// init palette from warm to white hot colors
+	var initPalette = function () {
+		palette = Array(256);
 
-        for(var i = 0; i < 64; i++) {
-            palette[i] = [(i << 2), 0, 0];
-            palette[i + 64] = [255, (i << 2), 0];
-            palette[i + 128] = [255, 255, (i << 2)];
-            palette[i + 192] = [255, 255, 255];
-        }
-    };
+		for (var i = 0; i < 64; i++) {
+			palette[i] = [(i << 2), 0, 0];
+			palette[i + 64] = [255, (i << 2), 0];
+			palette[i + 128] = [255, 255, (i << 2)];
+			palette[i + 192] = [255, 255, 255];
+		}
+	};
 
-    // offscreen buffer for rendering and scaling
-    var initBuffer = function() {
-        buffer = document.createElement('canvas');
-        buffer.width = width;
-        buffer.height = height;
-        buffer.style.visibility = 'hidden';
+	// offscreen buffer for rendering and scaling
+	var initBuffer = function () {
+		buffer = document.createElement('canvas');
+		buffer.width = width;
+		buffer.height = height;
+		buffer.style.visibility = 'hidden';
 
-        bufferContext = buffer.getContext('2d');
-        imageData = bufferContext.createImageData(width, height);
-    };
+		bufferContext = buffer.getContext('2d');
+		imageData = bufferContext.createImageData(width, height);
+	};
 
-    // main render loop
-   this.update = function() {
-   		if (!G.isMobile()) {
-	        smooth();
-	        draw();
-	        fan = utils.getRandomInt(0, 6);
-	    } else {
-	    	var grd = ctx.createLinearGradient(0, CC.h - P.fireOffset , 0, G.can.height);
-	    	grd.addColorStop(0, 'rgba(255, 0, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
-	    	grd.addColorStop(0.7, 'rgba(255, 165, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
-	    	grd.addColorStop(0.9, 'rgba(255, 255, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
-	    	sv();
-	    	fs(grd);
-	    	fr(0, CC.h - P.fireOffset, G.can.width, P.fireOffset)
-	    	rs();
-	    }
-    };
+	// main render loop
+	this.update = function () {
+		if (!G.isMobile()) {
+			smooth();
+			draw();
+			fan = utils.getRandomInt(0, 6);
+		} else {
+			var grd = ctx.createLinearGradient(0, CC.h - P.fireOffset, 0, G.can.height);
+			grd.addColorStop(0, 'rgba(255, 0, 0, ' + utils.getRandomInt(8, 10) / 10 + ')');
+			grd.addColorStop(0.7, 'rgba(255, 165, 0, ' + utils.getRandomInt(8, 10) / 10 + ')');
+			grd.addColorStop(0.9, 'rgba(255, 255, 0, ' + utils.getRandomInt(8, 10) / 10 + ')');
+			sv();
+			fs(grd);
+			fr(0, CC.h - P.fireOffset, G.can.width, P.fireOffset)
+			rs();
+		}
+	};
 
-    var smooth = function() {
-        for(var x = width - 1; x >= 1; x--) {
-            for(var y = height; y--;) {
-                var p = ((
-                    colorMap[toIndex(x - 1, y - 1)] +
-                    colorMap[toIndex(x, y - 1)] +
-                    colorMap[toIndex(x + 1, y - 1)] +
-                    colorMap[toIndex(x - 1, y)] +
-                    colorMap[toIndex(x + 1, y)] +
-                    colorMap[toIndex(x - 1, y + 1)] +
-                    colorMap[toIndex(x, y + 1)] +
-                    colorMap[toIndex(x + 1, y + 1)]) >> 3);
+	var smooth = function () {
+		for (var x = width - 1; x >= 1; x--) {
+			for (var y = height; y--;) {
+				var p = ((
+					colorMap[toIndex(x - 1, y - 1)] +
+					colorMap[toIndex(x, y - 1)] +
+					colorMap[toIndex(x + 1, y - 1)] +
+					colorMap[toIndex(x - 1, y)] +
+					colorMap[toIndex(x + 1, y)] +
+					colorMap[toIndex(x - 1, y + 1)] +
+					colorMap[toIndex(x, y + 1)] +
+					colorMap[toIndex(x + 1, y + 1)]) >> 3);
 
-                p = Math.max(0, p - randomValue(fan));
+				p = Math.max(0, p - randomValue(fan));
 
-                colorMap[toIndex(x, y - 1)] = p;
+				colorMap[toIndex(x, y - 1)] = p;
 
-                if (y < height - slack) { // don't draw random noise in bottom rows
-                    if (y < height - 2) {
-                        // set two lines of random palette noise at bottom of
-                        // colorMap
-                        colorMap[toIndex(x, height)] =
-                            randomValue(palette.length);
-                        colorMap[toIndex(x, height - 1)] =
-                            randomValue(palette.length);
-                    }
+				if (y < height - slack) { // don't draw random noise in bottom rows
+					if (y < height - 2) {
+						// set two lines of random palette noise at bottom of
+						// colorMap
+						colorMap[toIndex(x, height)] =
+							randomValue(palette.length);
+						colorMap[toIndex(x, height - 1)] =
+							randomValue(palette.length);
+					}
 
-                    drawPixel(x, y, palette[colorMap[toIndex(x, y)]]);
-                }
-            }
-        }
-    };
+					drawPixel(x, y, palette[colorMap[toIndex(x, y)]]);
+				}
+			}
+		}
+	};
 
-    // draw colormap->palette values to screen
-    var draw = function() {
-        // render the image data to the offscreen buffer...
-        bufferContext.putImageData(imageData, 0, 0);
-        // ...then draw it to scale to the onscreen canvas
-        context.drawImage(buffer, -20, CC.h - (height * scale), width * scale, height * scale + 10);
-    };
+	// draw colormap->palette values to screen
+	var draw = function () {
+		// render the image data to the offscreen buffer...
+		bufferContext.putImageData(imageData, 0, 0);
+		// ...then draw it to scale to the onscreen canvas
+		context.drawImage(buffer, -20, CC.h - (height * scale), width * scale, height * scale + 10);
+	};
 
-    // set pixels in imageData
-    var drawPixel = function(x, y, color) {
-        var offset = (x + y * imageData.width) * 4;
-        imageData.data[offset] = color[0];
-        imageData.data[offset + 1] = color[1];
-        imageData.data[offset + 2] = color[2];
-        imageData.data[offset + 3] = 255;
-    };
+	// set pixels in imageData
+	var drawPixel = function (x, y, color) {
+		var offset = (x + y * imageData.width) * 4;
+		imageData.data[offset] = color[0];
+		imageData.data[offset + 1] = color[1];
+		imageData.data[offset + 2] = color[2];
+		imageData.data[offset + 3] = 255;
+	};
 
-    var randomValue = function(max) {
-        // protip: a double bitwise not (~~) is much faster than
-        // Math.floor() for truncating floating point values into "ints"
-        return ~~(Math.random() * max);
-    };
+	var randomValue = function (max) {
+		// protip: a double bitwise not (~~) is much faster than
+		// Math.floor() for truncating floating point values into "ints"
+		return ~~(Math.random() * max);
+	};
 
-    // because "two-dimensional" arrays in JavaScript suck
-    var toIndex = function(x, y) {
-        return (y * width + x);
-    };
+	// because "two-dimensional" arrays in JavaScript suck
+	var toIndex = function (x, y) {
+		return (y * width + x);
+	};
 
-    // draw a bunch of random embers onscreen
-    this.drawEmbers = function() {
-        for(var x = 1; x < width - 1; x++) {
-            for(var y = 1; y < height; y++) {
-                if(Math.random() < 0.11)
-                    colorMap[toIndex(x, y)] = randomValue(palette.length);
-            }
-        }
-    };
+	// draw a bunch of random embers onscreen
+	this.drawEmbers = function () {
+		for (var x = 1; x < width - 1; x++) {
+			for (var y = 1; y < height; y++) {
+				if (Math.random() < 0.11)
+					colorMap[toIndex(x, y)] = randomValue(palette.length);
+			}
+		}
+	};
 };

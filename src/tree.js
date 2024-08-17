@@ -91,8 +91,8 @@ Tree.prototype = {
 		T.preCompute();
 		T.x = blw + bw;
 		T.y = CC.h - T.h - (P.fireOffset * 0.6),
-		T.width = bw,
-		T.height = T.h;
+			T.width = bw,
+			T.height = T.h;
 		// T.drawFractalTree(T.x, T.y, T.width, T.height)
 
 		//T.update(T);
@@ -110,7 +110,7 @@ Tree.prototype = {
 		bp();
 		mt(x, y);
 		// left side
-		bct(x , y + height, x - 25, y + height, x - 25, y + height);
+		bct(x, y + height, x - 25, y + height, x - 25, y + height);
 
 		// left bottom curve
 		bct(x, y + height, x + (width / 2), y + height / 1.2, x + (width / 2), y + (height / 1.2))
@@ -120,10 +120,10 @@ Tree.prototype = {
 		// right side
 		bct(x + width, y + height, x + width, y, x + width, y);
 
-		ctx.shadowColor   = '#6b4e2a';
-        ctx.shadowOffsetX = -3;
-        ctx.shadowOffsetY = 3;
-        ctx.shadowBlur    = 10;
+		ctx.shadowColor = '#6b4e2a';
+		ctx.shadowOffsetX = -3;
+		ctx.shadowOffsetY = 3;
+		ctx.shadowBlur = 10;
 		ctx.strokeStyle = '#6b4e2a';
 		ctx.lineWidth = 1;
 		st();
@@ -144,18 +144,18 @@ Tree.prototype = {
 	},
 	addCircle: function (x, y, width) {
 		bp();
-		ar(x + (width/2), y, width/2, 0, Math.PI*2, false);
+		ar(x + (width / 2), y, width / 2, 0, Math.PI * 2, false);
 		fs('rgba(255, 0, 0, 0.4)');
 		fl();
 
 		bp();
-		ar(x + (width/2), y, width/3, 0, Math.PI*2, false);
+		ar(x + (width / 2), y, width / 3, 0, Math.PI * 2, false);
 		fs('rgba(255, 165, 0, 0.4)');
 		fl();
 
 		bp();
-		ar(x + (width/2), y, width/6, 0, Math.PI*2, false);
-		fs('rgba(255, 255, 0, ' + utils.getRandomInt(0.3, 0.5)/10 + ')');
+		ar(x + (width / 2), y, width / 6, 0, Math.PI * 2, false);
+		fs('rgba(255, 255, 0, ' + utils.getRandomInt(0.3, 0.5) / 10 + ')');
 		fl();
 	},
 	preCompute: function () {

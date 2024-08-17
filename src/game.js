@@ -48,7 +48,7 @@ function Game() {
 		gamePixels = P.w * P.h,
 		ratio = displayablePixels / gamePixels;
 
-	if (ratio < 0.5){
+	if (ratio < 0.5) {
 		G.setResolution(ratio * 2);
 	}
 
@@ -71,9 +71,9 @@ Game.prototype = {
 		G.speed = 1;
 		G.gameStartTime = new Date().getTime();
 
-		smoky =  new SmokyFlame();
+		smoky = new SmokyFlame();
 
-		blw = 200, bw =0;
+		blw = 200, bw = 0;
 		G.addInitialtrees();
 
 		player = new Player();
@@ -81,7 +81,7 @@ Game.prototype = {
 
 		flameBack.init();
 		weather = new Weather();
-		G.raf = raf(function(){
+		G.raf = raf(function () {
 			if (G.raf) {
 				G.cycle();
 				raf(arguments.callee);
@@ -95,17 +95,17 @@ Game.prototype = {
 		flameBack.update();
 		canvasToImage(); // get image before spash screen
 
-   		// console.log('Boom! DIE!');
-   		// update high score
-   		if (G.karma > G.highscore) {
-   			SU.play('highestScore');
-   			G.highscore = G.karma;
-   			utils.setLocalStorageData(G.karma);
-   		}
+		// console.log('Boom! DIE!');
+		// update high score
+		if (G.karma > G.highscore) {
+			SU.play('highestScore');
+			G.highscore = G.karma;
+			utils.setLocalStorageData(G.karma);
+		}
 
-   		SU.play('gameOver');
+		SU.play('gameOver');
 
-  		G.menu = new Menu();
+		G.menu = new Menu();
 	},
 	cycle: function () {
 		var now = new Date().getTime();
@@ -174,27 +174,27 @@ Game.prototype = {
 	},
 	showNoisyScreen: function () {
 		var w = G.can.width,
-	       h = G.can.height,
-	       idata = ctx.createImageData(w, h),
-	       buffer32 = new Uint32Array(idata.data.buffer),
-	       len = buffer32.length,
-	       i = 0;
+			h = G.can.height,
+			idata = ctx.createImageData(w, h),
+			buffer32 = new Uint32Array(idata.data.buffer),
+			len = buffer32.length,
+			i = 0;
 
-	   for (; i < len;) {
-	       buffer32[i++] = ((255 * Math.random())|0) << 24;
-	   }
+		for (; i < len;) {
+			buffer32[i++] = ((255 * Math.random()) | 0) << 24;
+		}
 
-	   ctx.putImageData(idata, 0, 0);
+		ctx.putImageData(idata, 0, 0);
 	},
 	addInitialtrees: function () {
 		G.trees = [];
-		G.trees.push(new Tree({isNoFlame: true}))
+		G.trees.push(new Tree({ isNoFlame: true }))
 		for (var i = 0; i < 5; i++) {
 			G.trees.push(new Tree())
 		}
 	},
-	resize: function() {
-		setTimeout(function(){
+	resize: function () {
+		setTimeout(function () {
 			var maxWidth = innerWidth,
 				maxHeight = innerHeight,
 
@@ -205,10 +205,10 @@ Game.prototype = {
 				height,
 				s = document.getElementById('canvascontainer').style;
 
-			if (availableRatio <= baseRatio){
+			if (availableRatio <= baseRatio) {
 				width = maxWidth;
 				height = maxHeight;//width / baseRatio;
-			} else{
+			} else {
 				height = maxHeight;
 				width = height * baseRatio;
 			}
@@ -216,7 +216,7 @@ Game.prototype = {
 			s.width = width + 'px';
 			s.height = height + 'px';
 
-			ctx.globalCompositeOperation="lighter";
+			ctx.globalCompositeOperation = "lighter";
 
 			G.can.width = width;
 			G.can.height = height;
@@ -224,7 +224,7 @@ Game.prototype = {
 
 			if (G.menu) {
 				G.menu = new Menu();
-				G.raf = raf(function(){
+				G.raf = raf(function () {
 					if (G.raf) {
 						G.cycle();
 						raf(arguments.callee);
@@ -235,31 +235,31 @@ Game.prototype = {
 
 			G.restart();
 
-		},100);
+		}, 100);
 	},
 	isMobile: function () {
 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-	      .test(navigator.userAgent)) {
-	      return true;
-	    }
-	    return false;
+			.test(navigator.userAgent)) {
+			return true;
+		}
+		return false;
 	},
-	pos : function(e){
+	pos: function (e) {
 		var rect = G.can.getBoundingClientRect(),
 			pos = [];
 
 		e = e.touches || [e];
 
-		for(var i = 0 ; i < e.length ; i++){
+		for (var i = 0; i < e.length; i++) {
 			pos.push({
-				x : (e[i].clientX),// - rect.left) / (rect.width / P.w),
-				y : (e[i].clientY)// - rect.top) / (rect.height / P.h)
+				x: (e[i].clientX),// - rect.left) / (rect.width / P.w),
+				y: (e[i].clientY)// - rect.top) / (rect.height / P.h)
 			})
 		}
 
 		return pos;
 	},
-	touchStart : function(e,m) {
+	touchStart: function (e, m) {
 		e.preventDefault();
 		G.touch = G.touch || !m;
 		var p = G.pos(e);
@@ -274,23 +274,23 @@ Game.prototype = {
 			G.menu.mouseDown && G.menu.mouseDown(e, x, y);
 		} else {
 			// G.isTouching = true;
-			G.keyDown({keyCode: 32});
+			G.keyDown({ keyCode: 32 });
 		}
 
-		if(!G.isInProgress) return;
+		if (!G.isInProgress) return;
 
 		//G.world.touchStart();
 	},
-	touchMove : function(e) {
+	touchMove: function (e) {
 		e.preventDefault();
-		if (G.curPos){
+		if (G.curPos) {
 			G.curPos = G.pos(e);
 
-			if(!G.isInProgress) return;
+			if (!G.isInProgress) return;
 			//G.world.touchMove();
 		}
 	},
-	touchEnd : function(e) {
+	touchEnd: function (e) {
 		e.preventDefault();
 
 		var p = G.curPos[0];
@@ -302,12 +302,12 @@ Game.prototype = {
 			//G.world.touchEnd();
 		}
 	},
-	keyDown: function(e) {
+	keyDown: function (e) {
 		// 13 is enter
 		if ((e.keyCode === 13 || e.keyCode === 32) && G.menu) {
 			G.menu = null;
-            G.restart();
-            SU.play('playGame');
+			G.restart();
+			SU.play('playGame');
 			return;
 		}
 		if (!G.isInProgress) {
@@ -319,11 +319,11 @@ Game.prototype = {
 			player && player.keyDown(e.keyCode);
 		}
 	},
-	keyUp: function(e) {
-		if(!G.isInProgress) return;
+	keyUp: function (e) {
+		if (!G.isInProgress) return;
 		player && player.keyUp(e.keyCode);
 	},
-	mouseDown: function(e) {
+	mouseDown: function (e) {
 		/*if(!G.touch){
 			G.touchStart(e, true);
 		}*/
@@ -334,17 +334,17 @@ Game.prototype = {
 			G.menu.mouseDown && G.menu.mouseDown(e, x, y);
 		}
 	},
-	mouseMove: function(e) {
+	mouseMove: function (e) {
 		/*if(!G.touch){
 			G.touchMove(e);
 		}*/
 	},
-	mouseUp: function(e) {
+	mouseUp: function (e) {
 		/*if(!G.touch){
 			G.touchEnd(e);
 		}*/
 	},
-	setResolution: function(r) {
+	setResolution: function (r) {
 		G.can.width = P.w * r;
 		G.can.height = P.h * r;
 

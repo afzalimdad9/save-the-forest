@@ -1,9 +1,9 @@
 // Vibration api
-navigator.vibrate = (function(){
-    return navigator.vibrate
-        || navigator.mozVibrate
-        || navigator.webkitVibrate
-        || noop;
+navigator.vibrate = (function () {
+	return navigator.vibrate
+		|| navigator.mozVibrate
+		|| navigator.webkitVibrate
+		|| noop;
 })();
 
 // Utility functions

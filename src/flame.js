@@ -19,7 +19,7 @@ Smoke = function () {
         this.r = 2.0;
     }
     Smoke.prototype.step = function (x, y, w) {
-        y -= utils.getRandomInt(rand(60,70), rand(200,350))
+        y -= utils.getRandomInt(rand(60, 70), rand(200, 350))
         // y -= rand(0, 3);
         x += rand(-2, 2);
         this.opacity -= 0.04;
@@ -29,7 +29,7 @@ Smoke = function () {
     };
     Smoke.prototype.draw = function (x, y, w) {
         y -= utils.getRandomInt(60, 150)
-        x += utils.getRandomInt(rand(-w+w/2, 0), rand(0,w-w/2))
+        x += utils.getRandomInt(rand(-w + w / 2, 0), rand(0, w - w / 2))
         if (this.opacity <= 0) {
             return;
         }
@@ -59,7 +59,7 @@ Trail = function () {
     Trail.prototype.draw = function (x, y, w) {
         this.r = w / 6;
         y -= rand(rand(-45, 5), rand(25, 75));
-        x -= rand(-w/2 - 20, w/2 + 20);
+        x -= rand(-w / 2 - 20, w / 2 + 20);
         var color, color2, g, rg;
         if (this.opacity <= 0) {
             return;
@@ -93,13 +93,13 @@ Flame = function () {
 
         var g, i, j;
         //for (i = j = 1; j <= 1; i = ++j) {
-            SF.addEntity(Trail, x, y - this.r / 3);
+        SF.addEntity(Trail, x, y - this.r / 3);
         //}
         g = ctx.createRadialGradient(x, y, 0, x, y, this.rg);
         g.addColorStop(0, 'rgba(255,180,0,' + rand(0.2, 0.9) + ')');
         g.addColorStop(1, 'rgba(255,180,0,0)');
         drawCircle(x, y, this.rg, g);
-        return drawCircle(x + rand(-1.5, 1.5), y + rand(-1.5, 1.5), w, this.g );
+        return drawCircle(x + rand(-1.5, 1.5), y + rand(-1.5, 1.5), w, this.g);
     };
     return Flame;
 }();

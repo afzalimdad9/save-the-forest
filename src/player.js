@@ -20,20 +20,20 @@ Player.prototype = {
 	tears: function (x, y) {
 		if (Pl.died) return;
 		bp();
-        ctx.fillStyle = '#36b1f7';
-        mt(Pl.x + Pl.w + x - 3, Pl.y + y);
-        lt(Pl.x + Pl.w + x, Pl.y + y - 4);
-        lt(Pl.x + Pl.w + x + 3, Pl.y + y);
-        ar(Pl.x + Pl.w + x, Pl.y + y, 3, 0, Math.PI);
-        cp();
-        fl();
+		ctx.fillStyle = '#36b1f7';
+		mt(Pl.x + Pl.w + x - 3, Pl.y + y);
+		lt(Pl.x + Pl.w + x, Pl.y + y - 4);
+		lt(Pl.x + Pl.w + x + 3, Pl.y + y);
+		ar(Pl.x + Pl.w + x, Pl.y + y, 3, 0, Math.PI);
+		cp();
+		fl();
 	},
 	body: function () {
 		sv();
-		ctx.shadowColor   = '#000';
-        ctx.shadowOffsetX = -2;
-        ctx.shadowOffsetY = 2;
-        ctx.shadowBlur    = 10;
+		ctx.shadowColor = '#000';
+		ctx.shadowOffsetX = -2;
+		ctx.shadowOffsetY = 2;
+		ctx.shadowBlur = 10;
 		if (Pl.died) {
 			fr(Pl.x - 2 * (Pl.h / 3), Pl.y, (2 * Pl.h) / 3, Pl.w);
 			rs();
@@ -62,12 +62,12 @@ Player.prototype = {
 
 		if (Pl.died) {
 			ar(Pl.x - 2 * (Pl.h / 3) + 6, Pl.y + 4, 2, 0, M.PI * 2, true);
-	    	ar(Pl.x - 2 * (Pl.h / 3) + 6, Pl.y + 10, 2, 0, M.PI * 2, true);
+			ar(Pl.x - 2 * (Pl.h / 3) + 6, Pl.y + 10, 2, 0, M.PI * 2, true);
 		} else {
-	    	ar(Pl.x + 2 * (Pl.w / 3) - 2, Pl.y + 5, 2, 0, M.PI * 2, true);
-	    	ar(Pl.x + (Pl.w - 3), Pl.y + 5, 2, 0, M.PI * 2, true);
-	    }
-    	ctx.fillStyle = clr;//'#8effb6';
+			ar(Pl.x + 2 * (Pl.w / 3) - 2, Pl.y + 5, 2, 0, M.PI * 2, true);
+			ar(Pl.x + (Pl.w - 3), Pl.y + 5, 2, 0, M.PI * 2, true);
+		}
+		ctx.fillStyle = clr;//'#8effb6';
 		fl();
 	},
 	legs: function () {
@@ -96,11 +96,11 @@ Player.prototype = {
 		sts('#dedede');
 		st();
 		fs('#8ED6FF');
-		for (var i = -30; i < Pl.w + 30; i+=6) {
+		for (var i = -30; i < Pl.w + 30; i += 6) {
 			bp();
 			mt(Pl.x + i, Pl.y + Pl.h);
-			lt(Pl.x + i - 1, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height/2));
-			lt(Pl.x + i + 3, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height/2));
+			lt(Pl.x + i - 1, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height / 2));
+			lt(Pl.x + i + 3, Pl.y + Pl.h + utils.getRandomInt(10, G.can.height / 2));
 			lt(Pl.x + i + 1, Pl.y + Pl.h);
 			cp();
 			fl();
@@ -150,7 +150,7 @@ Player.prototype = {
 		if (Pl.died && !Pl.busted) {
 			Pl.y += 10;
 			if (Pl.isCornerStrike) {
-				if (Pl.y > CC.h - 3*P.fireOffset) {
+				if (Pl.y > CC.h - 3 * P.fireOffset) {
 					if (!Pl.busted) {
 						Pl.busted = true;
 					}
@@ -216,7 +216,7 @@ Player.prototype = {
 			Pl.died = true;
 			Pl.isCornerStrike = true;
 			return;
-		} else if (Pl.y < 0 ) { // topmost collision
+		} else if (Pl.y < 0) { // topmost collision
 			Pl.died = true;
 			Pl.isCornerStrike = true;
 			return;

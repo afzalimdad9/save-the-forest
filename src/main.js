@@ -1,19 +1,19 @@
 var _ = window,
-raf = (function() {
-	return  _.requestAnimationFrame     ||
-    _.webkitRequestAnimationFrame 		||
-    _.mozRequestAnimationFrame    		||
+    raf = (function () {
+        return _.requestAnimationFrame ||
+            _.webkitRequestAnimationFrame ||
+            _.mozRequestAnimationFrame ||
 
-    function(c){
-        setTimeout(c, 1000 / 60);
-    };
-})(),
-M       = Math,
-abs     = M.abs,
-min     = M.min,
-max     = M.max,
-to      = setTimeout,
-fps     = 60;
+            function (c) {
+                setTimeout(c, 1000 / 60);
+            };
+    })(),
+    M = Math,
+    abs = M.abs,
+    min = M.min,
+    max = M.max,
+    to = setTimeout,
+    fps = 60;
 
 // Shortcuts
 var p = CanvasRenderingContext2D.prototype;
@@ -46,10 +46,10 @@ p.el = function drawEllipseWithQuatraticCurve(ctx, x, y, w, h, style) {
     sv();
     bp();
     mt(x, ym);
-    qct(x,y,xm,y);
-    qct(xe,y,xe,ym);
-    qct(xe,ye,xm,ye);
-    qct(x,ye,x,ym);
+    qct(x, y, xm, y);
+    qct(xe, y, xe, ym);
+    qct(xe, ye, xm, ye);
+    qct(x, ye, x, ym);
     ctx.strokeStyle = style ? style : '#000';
     ctx.lineWidth = 2;
     st();
@@ -57,27 +57,27 @@ p.el = function drawEllipseWithQuatraticCurve(ctx, x, y, w, h, style) {
     fl();
 }
 
-p.fs = function(p){
+p.fs = function (p) {
     this.fillStyle = P.inverted ? invert(p) : p;
 };
-p.sts = function(p){
+p.sts = function (p) {
     this.strokeStyle = P.inverted ? invert(p) : p;
 };
 
 // Adding all these functions to the global scope
-for(var i in p){
-    _[i] = (function(f){
-        return function(){
+for (var i in p) {
+    _[i] = (function (f) {
+        return function () {
             c[f].apply(c, arguments);
         }
     })(i);
 }
 
 var P = {
-	w: 640,
-	h: 760,
-	g: 800,
-	fireOffset: 70,
+    w: 640,
+    h: 760,
+    g: 800,
+    fireOffset: 70,
     spikesOffset: 50,
     tbOffset: 20
 };
@@ -95,8 +95,8 @@ function downloadCanvas() {
     }
 }
 
-addEventListener('DOMContentLoaded',function(){
-	_._can  = document.querySelector('canvas');
+addEventListener('DOMContentLoaded', function () {
+    _._can = document.querySelector('canvas');
     new Game();
 });
 

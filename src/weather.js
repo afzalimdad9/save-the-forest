@@ -10,11 +10,11 @@ function Cloud() {
 Cloud.prototype = {
 	drawArcs: function (x, y, sx, sy) {
 		bp();
-		mt(x/sx + 150, y - 15); // 188, 50
+		mt(x / sx + 150, y - 15); // 188, 50
 		qct(
-			x/sx + 150 + 50,
+			x / sx + 150 + 50,
 			y - 15 + 0,
-			x/sx + 150 + 40,
+			x / sx + 150 + 40,
 			y - 15 + 40
 		);
 		ctx.lineWidth = 4;
@@ -22,11 +22,11 @@ Cloud.prototype = {
 		st();
 
 		bp();
-		mt(x/sx + 20 + 30, y + 10); // 188, 50
+		mt(x / sx + 20 + 30, y + 10); // 188, 50
 		qct(
-			x/sx + 30,
+			x / sx + 30,
 			y + 35 + 10,
-			x/sx + 30 + 60,
+			x / sx + 30 + 60,
 			y + 35 + 15
 		);
 		st();
@@ -37,18 +37,18 @@ Cloud.prototype = {
 		ctx.scale(sx, sy);
 		bp();
 		fs(cloudColor)
-		mt(x/sx, y);
-		bct(x/sx - 40, y + 20, x/sx - 40, y + 70, x/sx + 60, y + 70);
-		bct(x/sx + 80, y + 100, x/sx + 150, y + 100, x/sx + 170, y + 70);
-		bct(x/sx + 250, y + 70, x/sx + 250, y + 40, x/sx + 220, y + 20);
-		bct(x/sx + 260, y - 40, x/sx + 200, y - 50, x/sx + 170, y - 30);
-		bct(x/sx + 150, y - 75, x/sx + 80, y - 60, x/sx + 80, y - 30);
-		bct(x/sx + 30, y - 75, x/sx - 20, y - 60, x/sx, y);
+		mt(x / sx, y);
+		bct(x / sx - 40, y + 20, x / sx - 40, y + 70, x / sx + 60, y + 70);
+		bct(x / sx + 80, y + 100, x / sx + 150, y + 100, x / sx + 170, y + 70);
+		bct(x / sx + 250, y + 70, x / sx + 250, y + 40, x / sx + 220, y + 20);
+		bct(x / sx + 260, y - 40, x / sx + 200, y - 50, x / sx + 170, y - 30);
+		bct(x / sx + 150, y - 75, x / sx + 80, y - 60, x / sx + 80, y - 30);
+		bct(x / sx + 30, y - 75, x / sx - 20, y - 60, x / sx, y);
 		cp();
-		ctx.shadowColor   = thisWeather.hexToRgb(thisWeather.getColor(), 0.8);
-        ctx.shadowOffsetX = -3;
-        ctx.shadowOffsetY = 3;
-        ctx.shadowBlur    = 10;
+		ctx.shadowColor = thisWeather.hexToRgb(thisWeather.getColor(), 0.8);
+		ctx.shadowOffsetX = -3;
+		ctx.shadowOffsetY = 3;
+		ctx.shadowBlur = 10;
 		ctx.lineWidth = 3;
 		sts(thisWeather.hexToRgb(thisWeather.getColor(), 0.8))
 		st();
@@ -110,14 +110,14 @@ SunMoon.prototype = {
 	},
 	update: function () {
 		// lets assume 30 secs is 1 day, so 15-15 secs day-night
-		if (Weather.dt / 1000 % (5*diffInWeatherTime) > 5*diffInWeatherTime ||
-			Weather.dt / 1000 % (5*diffInWeatherTime) > 4*diffInWeatherTime ||
-			Weather.dt / 1000 % (5*diffInWeatherTime) > 3*diffInWeatherTime
+		if (Weather.dt / 1000 % (5 * diffInWeatherTime) > 5 * diffInWeatherTime ||
+			Weather.dt / 1000 % (5 * diffInWeatherTime) > 4 * diffInWeatherTime ||
+			Weather.dt / 1000 % (5 * diffInWeatherTime) > 3 * diffInWeatherTime
 		) {
 			G.period = 'night';
-		} else if (Weather.dt / 1000 % (5*diffInWeatherTime) > 2*diffInWeatherTime) {
+		} else if (Weather.dt / 1000 % (5 * diffInWeatherTime) > 2 * diffInWeatherTime) {
 			G.period = 'evening';
-		} else if (Weather.dt / 1000 % (5*diffInWeatherTime) > 1*diffInWeatherTime) {
+		} else if (Weather.dt / 1000 % (5 * diffInWeatherTime) > 1 * diffInWeatherTime) {
 			G.period = 'afternoon';
 		} else {
 			G.period = 'morning';
@@ -132,10 +132,10 @@ SunMoon.prototype = {
 
 		this.y -= 0.1;
 		sv();
-		ctx.shadowColor   = this.getColor();
-        ctx.shadowOffsetX = -3;
-        ctx.shadowOffsetY = 3;
-        ctx.shadowBlur    = 10;
+		ctx.shadowColor = this.getColor();
+		ctx.shadowOffsetX = -3;
+		ctx.shadowOffsetY = 3;
+		ctx.shadowBlur = 10;
 		bp();
 		ar(this.x, this.y, this.r, 0, Math.PI * 2, true);
 		cp();
@@ -160,7 +160,7 @@ SunMoon.prototype = {
 
 function WindParticle(i) {
 	this.x = G.can.width + utils.getRandomInt(0, G.can.width);
-	this.y = (i+1) * WD.pDist;
+	this.y = (i + 1) * WD.pDist;
 	this.color = '#d1e5ff';
 	this.speed = utils.getRandomInt(1, WD.speed);
 }
@@ -252,17 +252,17 @@ Rain.prototype = {
 
 function Weather() {
 	this.colors = [
-		[255,255,255],
-		[142,214,255],
+		[255, 255, 255],
+		[142, 214, 255],
 		[255, 254, 210],
-		[153,153,153],
-		[20,20,20],
-		[20,20,20]
+		[153, 153, 153],
+		[20, 20, 20],
+		[20, 20, 20]
 	];
 
 	this.step = 0;
 	this.i = 0;
-	this.colorIndices = [0, 1 ,2, 3];
+	this.colorIndices = [0, 1, 2, 3];
 
 	thisWeather = this;
 	CC = document.getElementById('canvascontainer').style;
@@ -282,9 +282,9 @@ Weather.prototype = {
 			b1 = Math.round(istep * c0_0[2] + thisWeather.step * c0_1[2]),
 			color1 = 'rgb(' + r1 + ',' + g1 + ',' + b1 + ')',
 
-			r2 = Math.round(istep * 255+ thisWeather.step * 255),
-			g2 = Math.round(istep * 255+ thisWeather.step * 255),
-			b2 = Math.round(istep * 255+ thisWeather.step * 255),
+			r2 = Math.round(istep * 255 + thisWeather.step * 255),
+			g2 = Math.round(istep * 255 + thisWeather.step * 255),
+			b2 = Math.round(istep * 255 + thisWeather.step * 255),
 			color2 = 'rgb(' + r2 + ',' + g2 + ',' + b2 + ')';
 
 		var grd = ctx.createLinearGradient(0, 0, 0, G.can.height);
@@ -292,7 +292,7 @@ Weather.prototype = {
 		grd.addColorStop(0.9, color2);
 		G.backgroundColor = grd;
 
-		thisWeather.step += SM.isSun ? 0.0076 : 0.0076/2.22; // 1 / (diffInWeatherTime * fps);
+		thisWeather.step += SM.isSun ? 0.0076 : 0.0076 / 2.22; // 1 / (diffInWeatherTime * fps);
 		if (thisWeather.step >= 1) {
 			thisWeather.step = 0;
 			for (var j = 0; j < thisWeather.colorIndices.length; j++) {
@@ -302,23 +302,23 @@ Weather.prototype = {
 		}
 	},
 	hexToRgb: function (hexColor, alpha) {
-	    if (!hexColor) { return; }
+		if (!hexColor) { return; }
 
-	    alpha = alpha || 1.0;
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hexColor = hexColor.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
+		alpha = alpha || 1.0;
+		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+		hexColor = hexColor.replace(shorthandRegex, function (m, r, g, b) {
+			return r + r + g + g + b + b;
+		});
 
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
-	    return result ? 'rgba(' +
-	      parseInt(result[1], 16) + ',' +
-	      parseInt(result[2], 16) + ',' +
-	      parseInt(result[3], 16) + ',' +
-	      alpha + ')' : 'rgba(255,255,255,0)';
+		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
+		return result ? 'rgba(' +
+			parseInt(result[1], 16) + ',' +
+			parseInt(result[2], 16) + ',' +
+			parseInt(result[3], 16) + ',' +
+			alpha + ')' : 'rgba(255,255,255,0)';
 	},
-	getColor:  function (isKarmaText) {
+	getColor: function (isKarmaText) {
 		var color;
 		switch (G.period) {
 			case 'morning':
@@ -348,7 +348,7 @@ Weather.prototype = {
 			if (!this.canRain && M.ceil(Weather.dt / 1000) % 16 === 0) {
 				this.canRain = true;
 				this.isRaining = true;
-			} else if (M.ceil(Weather.dt / 1000) % 33  === 0) {
+			} else if (M.ceil(Weather.dt / 1000) % 33 === 0) {
 				this.canRain = false;
 				this.isRaining = false;
 			}
