@@ -3,18 +3,24 @@ function Background() {
 	BG = this;
 	BG.animate();
 }
+
 Background.prototype = {
 	burnBurnBurn: function() {
 		var x, y, bottomLine = BG.canvasWidth * (BG.canvasHeight - 1);
+
 		// draw random pixels at the bottom line
 		for (x = 0; x < BG.canvasWidth; x++) {
 			var value = 0;
+
 			if (Math.random() > BG.threshold)
 				value = 255;
+
 			BG.fire[bottomLine + x] = value;
 		}
+
 		// move flip upwards, start at bottom
 		var value = 0;
+
 		for (y = 0; y < BG.canvasHeight; ++y) {
 			for (var x = 0; x < BG.canvasWidth; ++x) {
 				if (x == 0) {
@@ -34,33 +40,42 @@ Background.prototype = {
 					value += BG.fire[bottomLine - BG.canvasWidth + x];
 					value /= 4;
 				}
+
 				if (value > 1)
 					value -= 1;
+
 				value = Math.floor(value);
 				var index = bottomLine - BG.canvasWidth + x;
 				BG.fire[index] = value;
 			}
+
 			bottomLine -= BG.canvasWidth;
 		}
+
 		var skipRows = 1; // skip the bottom 2 rows
+
 		// render the flames using our color table
 		for (var y = skipRows; y < BG.canvasHeight; ++y) {
 			for (var x = 0; x < BG.canvasWidth; ++x) {
 				var index = y * BG.canvasWidth * 4 + x * 4;
 				var value = BG.fire[(y - skipRows) * BG.canvasWidth + x];
+
 				BG.data[index] = BG.colors[value][0];
 				BG.data[++index] = BG.colors[value][1];
 				BG.data[++index] = BG.colors[value][2];
 				BG.data[++index] = 255;
 			}
 		}
+
 		// sometimes change BG.fire intensity
 		if (BG.intensity == null) {
 			if (Math.random() > 0.95) {
 				BG.randomizeThreshold();
 			}
 		}
+
 		BG.ctx.putImageData(BG.imageData, 0, BG.CC.height - BG.canvasHeight);
+
 	},
 	randomizeThreshold: function() {
 		BG.threshold += Math.random() * 0.2 - 0.1;
@@ -77,11 +92,13 @@ Background.prototype = {
 		BG.data = BG.imageData.data;
 		//BG.numPixels = BG.data.length / 4;
 		BG.colors = [];
+
 		for (var i = 0; i < 256; i++) {
 			var color = [];
 			color[0] = color[1] = color[2] = 75;
 			BG.colors[i] = color;
 		}
+
 		for (var i = 0; i < 32; ++i) {
 			BG.colors[i][2] = i << 1;
 			BG.colors[i + 32][0] = i << 3;
@@ -104,12 +121,15 @@ Background.prototype = {
 			BG.colors[i + 224][1] = 255;
 			BG.colors[i + 224][2] = 224 + i;
 		}
+
 		BG.fire = [];
 		// init BG.fire array
 		for (var i = 0; i < BG.canvasWidth * BG.canvasHeight; i++) {
 			BG.fire[i] = 75;
 		}
+
 		BG.burnBurnBurn();
+
 		// intercept key up event to change intensity on BG.fire effect
 		document.body.onkeyup = function(event) {
 			if (event.keyCode >= 97 && event.keyCode <= 105) {
@@ -123,6 +143,7 @@ Background.prototype = {
 				BG.randomizeThreshold();
 			}
  		};
+
 	}
 };*/
 
@@ -147,6 +168,9 @@ var flameBack = new function() {
 
         width = (this.canvas.width + 30) / scale;
         height = P.fireOffset / scale;
+
+        width = Math.ceil(width);
+        height = Math.ceil(height);
 
         colorMap = Array(width * height);
 
@@ -184,9 +208,20 @@ var flameBack = new function() {
 
     // main render loop
    this.update = function() {
-        smooth();
-        draw();
-        fan = utils.getRandomInt(0, 6);
+   		if (!G.isMobile()) {
+	        smooth();
+	        draw();
+	        fan = utils.getRandomInt(0, 6);
+	    } else {
+	    	var grd = ctx.createLinearGradient(0, CC.h - P.fireOffset , 0, G.can.height);
+	    	grd.addColorStop(0, 'rgba(255, 0, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
+	    	grd.addColorStop(0.7, 'rgba(255, 165, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
+	    	grd.addColorStop(0.9, 'rgba(255, 255, 0, ' + utils.getRandomInt(8, 10)/10 + ')');
+	    	sv();
+	    	fs(grd);
+	    	fr(0, CC.h - P.fireOffset, G.can.width, P.fireOffset)
+	    	rs();
+	    }
     };
 
     var smooth = function() {
