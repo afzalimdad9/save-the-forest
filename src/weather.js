@@ -32,7 +32,6 @@ Cloud.prototype = {
 		st();
 	},
 	draw: function (x, y, sx, sy) {
-
 		var cloudColor = thisWeather.hexToRgb(thisWeather.getColor(), 0.5);
 
 		ctx.scale(sx, sy);
@@ -46,7 +45,6 @@ Cloud.prototype = {
 		bct(x/sx + 150, y - 75, x/sx + 80, y - 60, x/sx + 80, y - 30);
 		bct(x/sx + 30, y - 75, x/sx - 20, y - 60, x/sx, y);
 		cp();
-
 		ctx.shadowColor   = thisWeather.hexToRgb(thisWeather.getColor(), 0.8);
         ctx.shadowOffsetX = -3;
         ctx.shadowOffsetY = 3;
@@ -55,6 +53,7 @@ Cloud.prototype = {
 		sts(thisWeather.hexToRgb(thisWeather.getColor(), 0.8))
 		st();
 		fl();
+
 		this.drawArcs(x, y, sx, sy);
 	},
 	update: function () {
@@ -111,14 +110,14 @@ SunMoon.prototype = {
 	},
 	update: function () {
 		// lets assume 30 secs is 1 day, so 15-15 secs day-night
-		if (Weather.dt / 1000 > 5 * diffInWeatherTime ||
-			Weather.dt / 1000 > 4 * diffInWeatherTime ||
-			Weather.dt / 1000 > 3 * diffInWeatherTime
+		if (Weather.dt / 1000 % (5*diffInWeatherTime) > 5*diffInWeatherTime ||
+			Weather.dt / 1000 % (5*diffInWeatherTime) > 4*diffInWeatherTime ||
+			Weather.dt / 1000 % (5*diffInWeatherTime) > 3*diffInWeatherTime
 		) {
 			G.period = 'night';
-		} else if (Weather.dt / 1000 > 2 * diffInWeatherTime) {
+		} else if (Weather.dt / 1000 % (5*diffInWeatherTime) > 2*diffInWeatherTime) {
 			G.period = 'evening';
-		} else if (Weather.dt / 1000 > 1 * diffInWeatherTime) {
+		} else if (Weather.dt / 1000 % (5*diffInWeatherTime) > 1*diffInWeatherTime) {
 			G.period = 'afternoon';
 		} else {
 			G.period = 'morning';
@@ -156,7 +155,6 @@ SunMoon.prototype = {
 		rs();
 
 		thisWeather.updateGradient();
-		//G.backgroundColor = this.isSun ? this.getColor(true) : '#555';
 	}
 }
 
@@ -345,7 +343,7 @@ Weather.prototype = {
 		sunMoon.update();
 		cloud.update();
 
-		console.log(M.ceil(Weather.dt / 1000))
+		// console.log(M.ceil(Weather.dt / 1000))
 		if (!this.canRain && M.ceil(Weather.dt / 1000) % 16 === 0) {
 			this.canRain = true;
 			this.isRaining = true;
