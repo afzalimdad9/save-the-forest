@@ -13,14 +13,14 @@ function Tree(config) {
 	T.maxDist = 200;
 	T.branchThickness = 3;
 
-	CC.w = utils.pI(CC.width);
-	CC.h = utils.pI(CC.height);
+	CC.w = utils.pI(G.can.width);
+	CC.h = utils.pI(G.can.height);
 
 	T.color = '#a77b44';
 	this.add();
 	if (!config.isNoFlame) {
-        T.flame = new SmokyFlame();
-		T.flame.addEntity(Flame);
+		this.flame = smoky;
+		this.flame.addEntity(Flame);
 	}
 	return T;
 }
@@ -37,7 +37,9 @@ Tree.prototype = {
 		if (depth != 0){
 			var x2 = x1 + T.bb;
 			var y2 = y1 - T.vv;
+
 			T.drawLine(x1, y1, x2, y2, depth);
+
 			T.drawTree(x2, y2, width, height, angle - T.angle, depth - 1);
 			T.drawTree(x2, y2, width, height, angle + T.angle, depth - 1);
 			// T.drawLine(x1, y1, x2, y2, depth);
@@ -58,6 +60,7 @@ Tree.prototype = {
 		lt(x2, y2);
 		cp();
 		st();
+
 	},
 	cos: function (angle) {
 		return M.cos(T.deg_to_rad(angle));
@@ -88,14 +91,15 @@ Tree.prototype = {
 		T.height = T.h;
 		// T.drawFractalTree(T.x, T.y, T.width, T.height)
 
-		T.update(T);
+		//T.update(T);
 		return T;
 	},
-    update: function (treeInstance) {
-        var x = treeInstance.x,
+	update: function (treeInstance) {
+		var x = treeInstance.x,
 			y = treeInstance.y,
 			width = treeInstance.width,
 			height = treeInstance.height;
+
 		sv();
 		fs(T.color);
 
@@ -123,8 +127,12 @@ Tree.prototype = {
 		fl();
 		rs();
 
-		fs('#6b4e2a')
+		fs('#444')
 		el(ctx, x, y - 4, width, 10, '#6b4e2a');
+
+		if (treeInstance.flame) {
+			treeInstance.flame.update(x, y, width);
+		}
 	},
 	preCompute: function () {
 		T.lw = blw + bw + (bw === 0 ? 0 : utils.getRandomInt(T.minDist, T.maxDist));
@@ -139,4 +147,3 @@ Tree.prototype = {
 		that.flame = undefined;
 	}
 };
-
