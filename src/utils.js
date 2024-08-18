@@ -2,8 +2,7 @@
 navigator.vibrate = (function () {
 	return navigator.vibrate
 		|| navigator.mozVibrate
-		|| navigator.webkitVibrate
-		|| noop;
+		|| navigator.webkitVibrate;
 })();
 
 // Utility functions

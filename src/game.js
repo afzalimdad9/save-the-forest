@@ -95,7 +95,6 @@ Game.prototype = {
 		flameBack.update();
 		canvasToImage(); // get image before spash screen
 
-		// console.log('Boom! DIE!');
 		// update high score
 		if (G.karma > G.highscore) {
 			SU.play('highestScore');

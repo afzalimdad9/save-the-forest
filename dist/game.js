@@ -2,8 +2,7 @@
 navigator.vibrate = (function(){
     return navigator.vibrate
         || navigator.mozVibrate
-        || navigator.webkitVibrate
-        || noop;
+        || navigator.webkitVibrate;
 })();
 
 // Utility functions
@@ -954,7 +953,6 @@ Weather.prototype = {
 		if (!G.isMobile()) {
 			cloud.update();
 
-			// console.log(M.ceil(Weather.dt / 1000))
 			if (!this.canRain && M.ceil(Weather.dt / 1000) % 16 === 0) {
 				this.canRain = true;
 				this.isRaining = true;
@@ -998,7 +996,6 @@ function Particles(x, y) {
 
 Particles.prototype = {
 	draw: function () {
-	    // ctx.globalCompositeOperation = 'source-over';
 		fs('red');
 		for (var i = 0; i < 10; i+= 2) {
 			fr(PS.x + 4*i, M.min(PS.y + this.vyL1, CC.h - 50), utils.getRandomInt(4, 6), utils.getRandomInt(4, 6));
@@ -1019,154 +1016,6 @@ Particles.prototype = {
 		PS.x -= G.speed;
 	}
 }
-/*var BG;
-function Background() {
-	BG = this;
-	BG.animate();
-}
-
-Background.prototype = {
-	burnBurnBurn: function() {
-		var x, y, bottomLine = BG.canvasWidth * (BG.canvasHeight - 1);
-
-		// draw random pixels at the bottom line
-		for (x = 0; x < BG.canvasWidth; x++) {
-			var value = 0;
-
-			if (Math.random() > BG.threshold)
-				value = 255;
-
-			BG.fire[bottomLine + x] = value;
-		}
-
-		// move flip upwards, start at bottom
-		var value = 0;
-
-		for (y = 0; y < BG.canvasHeight; ++y) {
-			for (var x = 0; x < BG.canvasWidth; ++x) {
-				if (x == 0) {
-					value = BG.fire[bottomLine];
-					value += BG.fire[bottomLine];
-					value += BG.fire[bottomLine - BG.canvasWidth];
-					value /= 3;
-				} else if (x == BG.canvasWidth -1) {
-					value = BG.fire[bottomLine + x];
-					value += BG.fire[bottomLine - BG.canvasWidth + x];
-					value += BG.fire[bottomLine + x - 1];
-					value /= 3;
-				} else {
-					value = BG.fire[bottomLine + x];
-					value += BG.fire[bottomLine + x + 1];
-					value += BG.fire[bottomLine + x - 1];
-					value += BG.fire[bottomLine - BG.canvasWidth + x];
-					value /= 4;
-				}
-
-				if (value > 1)
-					value -= 1;
-
-				value = Math.floor(value);
-				var index = bottomLine - BG.canvasWidth + x;
-				BG.fire[index] = value;
-			}
-
-			bottomLine -= BG.canvasWidth;
-		}
-
-		var skipRows = 1; // skip the bottom 2 rows
-
-		// render the flames using our color table
-		for (var y = skipRows; y < BG.canvasHeight; ++y) {
-			for (var x = 0; x < BG.canvasWidth; ++x) {
-				var index = y * BG.canvasWidth * 4 + x * 4;
-				var value = BG.fire[(y - skipRows) * BG.canvasWidth + x];
-
-				BG.data[index] = BG.colors[value][0];
-				BG.data[++index] = BG.colors[value][1];
-				BG.data[++index] = BG.colors[value][2];
-				BG.data[++index] = 255;
-			}
-		}
-
-		// sometimes change BG.fire intensity
-		if (BG.intensity == null) {
-			if (Math.random() > 0.95) {
-				BG.randomizeThreshold();
-			}
-		}
-
-		BG.ctx.putImageData(BG.imageData, 0, BG.CC.height - BG.canvasHeight);
-
-	},
-	randomizeThreshold: function() {
-		BG.threshold += Math.random() * 0.2 - 0.1;
-		BG.threshold = Math.min(Math.max(BG.threshold, 0.5), 0.8);
-	},
-	animate: function () {
-		BG.intensity = null;
-		BG.threshold = 0.5;
-		BG.CC = document.querySelector('canvas');
-		BG.ctx = BG.CC.getContext('2d');
-		BG.canvasWidth = BG.CC.width;
-		BG.canvasHeight = 50 || P.fireOffset;
-		BG.imageData = BG.ctx.getImageData(0, BG.CC.height - BG.canvasHeight, BG.canvasWidth, BG.canvasHeight);
-		BG.data = BG.imageData.data;
-		//BG.numPixels = BG.data.length / 4;
-		BG.colors = [];
-
-		for (var i = 0; i < 256; i++) {
-			var color = [];
-			color[0] = color[1] = color[2] = 75;
-			BG.colors[i] = color;
-		}
-
-		for (var i = 0; i < 32; ++i) {
-			BG.colors[i][2] = i << 1;
-			BG.colors[i + 32][0] = i << 3;
-			BG.colors[i + 32][2] = 64 - (i << 1);
-			BG.colors[i + 64][0] = 255;
-			BG.colors[i + 64][1] = i << 3;
-			BG.colors[i + 96][0] = 255;
-			BG.colors[i + 96][1] = 255;
-			BG.colors[i + 96][2] = i << 2;
-			BG.colors[i + 128][0] = 255;
-			BG.colors[i + 128][1] = 255;
-			BG.colors[i + 128][2] = 64 + (i << 2);
-			BG.colors[i + 160][0] = 255;
-			BG.colors[i + 160][1] = 255;
-			BG.colors[i + 160][2] = 128 + (i << 2);
-			BG.colors[i + 192][0] = 255;
-			BG.colors[i + 192][1] = 255;
-			BG.colors[i + 192][2] = 192 + i;
-			BG.colors[i + 224][0] = 255;
-			BG.colors[i + 224][1] = 255;
-			BG.colors[i + 224][2] = 224 + i;
-		}
-
-		BG.fire = [];
-		// init BG.fire array
-		for (var i = 0; i < BG.canvasWidth * BG.canvasHeight; i++) {
-			BG.fire[i] = 75;
-		}
-
-		BG.burnBurnBurn();
-
-		// intercept key up event to change intensity on BG.fire effect
-		document.body.onkeyup = function(event) {
-			if (event.keyCode >= 97 && event.keyCode <= 105) {
-				BG.intensity = (event.keyCode - 97);
-				BG.intensity = BG.intensity / 8;
-				BG.intensity = BG.intensity * 0.4;
-				BG.intensity = BG.intensity + 0.2;
-				BG.threshold = 1 - BG.intensity;
-			} else if (event.keyCode == 96) { // 0 ==> randomize
-				BG.intensity = 0;
-				BG.randomizeThreshold();
-			}
- 		};
-
-	}
-};*/
 
 var flameBack = new function() {
     var context;
@@ -1297,7 +1146,6 @@ var flameBack = new function() {
 
     var randomValue = function(max) {
         // protip: a double bitwise not (~~) is much faster than
-        // Math.floor() for truncating floating point values into "ints"
         return ~~(Math.random() * max);
     };
 
@@ -1376,7 +1224,6 @@ Player.prototype = {
 		if (Pl.isBlink >= 8) {
 			Pl.t = ct; Pl.isBlink = 0;
 		}
-		//fs(clr);
 		bp(clr);
 
 		if (Pl.died) {
@@ -1513,14 +1360,6 @@ Player.prototype = {
 		}
 	},
 	keyUp: function () {
-		/*if (Pl.irj) {
-			Pl.irj = false;
-			Pl.isInAir = true;
-			SU.play('moveAhead');
-			Pl.bounceFactor = Pl.maxH - Pl.h;
-			Pl.bounceFactor *= 4;
-			Pl.h = Pl.maxH;
-		}*/
 	},
 	checkCollision: function () {
 		if (Pl.x <= 0) { // leftmost collision
@@ -1604,51 +1443,6 @@ function Tree(config) {
 }
 
 Tree.prototype = {
-	/*drawFractalTree: function (x, y, width, height) {
-		T.drawTree(x, y, width, height, -90, T.branchThickness);
-	},
-	drawTree: function (x1, y1, width, height, angle, depth){
-		T.brLength = T.brLength || T.random(T.minW, T.maxW);
-		T.angle = T.angle || T.random(15, 20);
-		T.bb = (T.cos(angle) * depth * T.brLength);
-		T.vv = (T.sin(angle) * depth * T.brLength);
-		if (depth != 0){
-			var x2 = x1 + T.bb;
-			var y2 = y1 - T.vv;
-
-			T.drawLine(x1, y1, x2, y2, depth);
-
-			T.drawTree(x2, y2, width, height, angle - T.angle, depth - 1);
-			T.drawTree(x2, y2, width, height, angle + T.angle, depth - 1);
-			// T.drawLine(x1, y1, x2, y2, depth);
-		}
-	},
-	random: function (min, max){
-		return min + Math.floor(Math.random()*(max+1-min));
-	},
-	drawLine: function (x1, y1, x2, y2, thickness){
-		ctx.fillStyle   = '#000';
-		if(thickness > 2)
-			ctx.strokeStyle = 'rgb(139,126, 102)'; //Brown
-		else
-			ctx.strokeStyle = 'rgb(34,139,34)'; //Green
-		ctx.lineWidth = thickness * 1.5;
-		bp();
-		mt(x1, y1);
-		lt(x2, y2);
-		cp();
-		st();
-
-	},
-	cos: function (angle) {
-		return M.cos(T.deg_to_rad(angle));
-	},
-	sin: function (angle) {
-		return M.sin(T.deg_to_rad(angle));
-	},
-	deg_to_rad: function (angle){
-		return angle*(M.PI/180.0);
-	},*/
 	getWidth: function (val) {
 		if (val !== undefined) {
 			return val;
@@ -1667,9 +1461,6 @@ Tree.prototype = {
 		T.y = CC.h - T.h - (P.fireOffset * 0.6),
 		T.width = bw,
 		T.height = T.h;
-		// T.drawFractalTree(T.x, T.y, T.width, T.height)
-
-		//T.update(T);
 		return T;
 	},
 	update: function (treeInstance) {
@@ -1738,8 +1529,6 @@ Tree.prototype = {
 		T.w = utils.getRandomInt(T.minW, T.maxW);
 		bw = T.w;
 		T.h = utils.getRandomInt(T.minH, T.maxH);
-		// console.log(blw, bw)
-		// T.rw = CC.w - T.lw - T.w;
 	},
 	removeFlame: function (that) {
 		that.flame = undefined;
@@ -1804,9 +1593,7 @@ function Game() {
 	G.speed = 1;
 
 	// background animation
-	// background = new Background();
 	flameBack.canvas = G.can;
-	//flameBack.init();
 
 	G.menu = true;
 }
@@ -1844,7 +1631,6 @@ Game.prototype = {
 		flameBack.update();
 		canvasToImage(); // get image before spash screen
 
-   		// console.log('Boom! DIE!');
    		// update high score
    		if (G.karma > G.highscore) {
    			SU.play('highestScore');
@@ -1883,7 +1669,6 @@ Game.prototype = {
 			WD.speed = utils.getRandomInt(1, 30);
 			G.canSpeedBeIncreased = false;
 		} else if (M.ceil((now - G.gameStartTime) / 1000) % 11 === 0) {
-			// G.speed += 0.1;
 			G.canSpeedBeIncreased = true;
 		}
 
@@ -1898,7 +1683,6 @@ Game.prototype = {
 			utils.getRandomInt(0, 10) === 4 && SU.play('glitch');
 		}
 
-		//background.burnBurnBurn();
 		weather.update();
 
 		ctx.font = '15px Comic Sans';
@@ -2022,13 +1806,11 @@ Game.prototype = {
 
 			G.menu.mouseDown && G.menu.mouseDown(e, x, y);
 		} else {
-			// G.isTouching = true;
 			G.keyDown({keyCode: 32});
 		}
 
 		if(!G.isInProgress) return;
 
-		//G.world.touchStart();
 	},
 	touchMove : function(e) {
 		e.preventDefault();
@@ -2047,8 +1829,6 @@ Game.prototype = {
 
 		if (!G.isInProgress) {
 			//!G.isInProgress.click(p.x, p.y);
-		} else {
-			//G.world.touchEnd();
 		}
 	},
 	keyDown: function(e) {
@@ -2073,9 +1853,6 @@ Game.prototype = {
 		player && player.keyUp(e.keyCode);
 	},
 	mouseDown: function(e) {
-		/*if(!G.touch){
-			G.touchStart(e, true);
-		}*/
 		if (G.menu) {
 			var x = e.pageX - G.can.offsetLeft,
 				y = e.pageY - G.can.offsetTop;
@@ -2084,14 +1861,8 @@ Game.prototype = {
 		}
 	},
 	mouseMove: function(e) {
-		/*if(!G.touch){
-			G.touchMove(e);
-		}*/
 	},
 	mouseUp: function(e) {
-		/*if(!G.touch){
-			G.touchEnd(e);
-		}*/
 	},
 	setResolution: function(r) {
 		G.can.width = P.w * r;

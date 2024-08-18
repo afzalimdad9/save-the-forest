@@ -344,7 +344,6 @@ Weather.prototype = {
 		if (!G.isMobile()) {
 			cloud.update();
 
-			// console.log(M.ceil(Weather.dt / 1000))
 			if (!this.canRain && M.ceil(Weather.dt / 1000) % 16 === 0) {
 				this.canRain = true;
 				this.isRaining = true;

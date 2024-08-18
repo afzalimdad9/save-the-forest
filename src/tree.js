@@ -164,7 +164,6 @@ Tree.prototype = {
 		T.w = utils.getRandomInt(T.minW, T.maxW);
 		bw = T.w;
 		T.h = utils.getRandomInt(T.minH, T.maxH);
-		// console.log(blw, bw)
 		// T.rw = CC.w - T.lw - T.w;
 	},
 	removeFlame: function (that) {
